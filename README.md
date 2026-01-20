@@ -73,6 +73,6 @@ Verify:
 ollama list
 
 ▶️ Run the Application
-streamlit run app.py
+python -m streamlit run app.py
 
 
