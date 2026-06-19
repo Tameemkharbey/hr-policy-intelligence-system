@@ -1,78 +1,80 @@
-# 🤖 HR Policy Assistant (RAG + LLaMA 3)
+# HR Policy Intelligence Assistant
 
-A fully **local**, **secure**, and **intelligent HR chatbot** built using **LLaMA 3**, **Ollama**, **LangChain**, **FAISS**, and **Streamlit**.
-
-This system can:
-- Answer HR policy questions using **RAG**
-- Chat normally like a general AI assistant
-- Remember user details (e.g., name)
-- Support Admin & Employee roles
-- Run **100% locally** (no OpenAI / cloud APIs)
+A fully local, offline RAG-based AI assistant for querying internal HR policy documents. Built with LLaMA 3 (via Ollama), FAISS vector search, and LangChain — zero data leaves the local environment.
 
 ---
 
-## 🚀 Features
+## What It Does
 
-✅ Local LLaMA 3 (Ollama)  
-✅ Retrieval-Augmented Generation (FAISS)  
-✅ HR Policy PDF Upload (Admin)  
-✅ Role-based Login System  
-✅ User Memory (Name recognition)  
-✅ Dark / Light Mode Toggle 🌙☀️  
-✅ Fully Offline & Secure  
-✅ Streamlit UI Dashboard  
+- Answers HR policy questions using semantic retrieval over uploaded PDF documents
+- Falls back to general LLM conversation when no policy context is relevant
+- Admin role: upload and manage HR policy PDFs dynamically
+- Employee role: query policies through a clean chat interface
+- Maintains user context (name recognition) across the session
 
 ---
 
-## 🧠 Architecture
+## Architecture
 
+```
+User Query
+    ↓
+Streamlit UI
+    ↓
+LangChain RAG Pipeline
+    ├── FAISS vector store (Hugging Face embeddings)
+    │       ↑ indexed from HR policy PDFs
+    └── LLaMA 3 8B (4-bit quantized) via Ollama
+            → fully local inference, no network calls
+```
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Component | Technology |
-|--------|-----------|
-| LLM | LLaMA 3 (8B, 4-bit) |
-| LLM Runtime | Ollama |
-| Vector DB | FAISS |
-| Embeddings | Sentence-Transformers |
-| Framework | LangChain |
+|---|---|
+| LLM | LLaMA 3 8B, 4-bit quantized |
+| LLM runtime | Ollama (local inference) |
+| Vector store | FAISS |
+| Embeddings | Sentence-Transformers (Hugging Face) |
+| Orchestration | LangChain |
 | UI | Streamlit |
 | Language | Python |
 
+---
+
+## Setup
+
+```bash
+# 1. Clone and create environment
+git clone https://github.com/Tameemkharbey/hr-policy-intelligence-system.git
+cd hr-policy-intelligence-system
+python -m venv .venv
+.venv\Scripts\activate   # Windows
+source .venv/bin/activate  # macOS/Linux
+pip install -r requirements.txt
+
+# 2. Install Ollama and pull the model
+# https://ollama.com
+ollama pull llama3
+
+# 3. Run
+python -m streamlit run app.py
+```
 
 ---
 
-## ⚙️ Installation & Setup
+## Features
 
-### 1️⃣ Clone Repository
-```bash
-git clone https://github.com/your-username/hr-policy-assistant.git
-cd hr-policy-assistant
+- **100% offline** — LLaMA 3 runs locally via Ollama, FAISS index stored locally, no external API calls
+- **PDF ingestion** — admins upload policy documents; embeddings are generated and stored immediately
+- **Role-based access** — separate admin and employee entry points
+- **Semantic retrieval** — FAISS cosine similarity search over chunked policy documents
+- **Light/dark theme** — Streamlit theme toggle
 
-2️⃣ Create Virtual Environment
-python -m venv venv
-venv\Scripts\activate   # Windows
+---
 
-3️⃣ Install Dependencies
-pip install -r requirements.txt
+## License
 
-4️⃣ Install & Run Ollama
-
-Download Ollama from:
-👉 https://ollama.com
-
-Pull LLaMA 3:
-
-ollama pull llama3
-
-
-Verify:
-
-ollama list
-
-▶️ Run the Application
-python -m streamlit run app.py
-
-
+MIT
